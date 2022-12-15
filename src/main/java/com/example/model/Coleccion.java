@@ -59,11 +59,17 @@ public class Coleccion {
     
     @Column(name="NEGOCIADO")
     private boolean negociado;
-	
+    
+    @Column(name="TIPOPROVEEDOR")
+    private String tipo_proveedor;
 
-	
-	public Coleccion(String caracteristicas, String fechaInicio, String fechaFin, Usuario usuario, List<Modelo> modelos,
-			String descripcionLentes, List<Material> materiales, boolean lanzado, String rutas, boolean negociado) {
+    public Coleccion() {
+        super();
+    }
+    
+	public Coleccion(String caracteristicas, String fechaInicio, String fechaFin, Usuario usuario,
+			List<Modelo> modelos, String descripcionLentes, List<Material> materiales, boolean lanzado, String rutas,
+			boolean negociado, String tipo_proveedor) {
 		super();
 		this.caracteristicas = caracteristicas;
 		this.fechaInicio = fechaInicio;
@@ -75,78 +81,66 @@ public class Coleccion {
 		this.lanzado = lanzado;
 		this.rutas = rutas;
 		this.negociado = negociado;
+		this.tipo_proveedor = tipo_proveedor;
 	}
 
+	public Long getId() {
+		return id;
+	}
 
-	public Coleccion(String caracteristicas,String descripcionLentes, String fechaInicio, String fechaFin) {
-        super();
-        this.caracteristicas = caracteristicas;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.descripcionLentes = descripcionLentes;
-    }
-	
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Coleccion() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public String getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    
-    public String getCaracteristicas() {
+	public String getCaracteristicas() {
 		return caracteristicas;
 	}
+
 	public void setCaracteristicas(String caracteristicas) {
 		this.caracteristicas = caracteristicas;
 	}
 
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public String getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<Modelo> getModelos() {
+		return modelos;
+	}
+
+	public void setModelos(List<Modelo> modelos) {
+		this.modelos = modelos;
+	}
 
 	public String getDescripcionLentes() {
 		return descripcionLentes;
 	}
+
 	public void setDescripcionLentes(String descripcionLentes) {
 		this.descripcionLentes = descripcionLentes;
 	}
-    public List<Modelo> getModelos() {
-        return modelos;
-    }
-    public void setModelos(List<Modelo> modelos) {
-        this.modelos = modelos;
-    }
-    
-    
-    public List<Material> getMateriales() {
+
+	public List<Material> getMateriales() {
 		return materiales;
 	}
 
@@ -177,4 +171,14 @@ public class Coleccion {
 	public void setNegociado(boolean negociado) {
 		this.negociado = negociado;
 	}
+
+	public String getTipo_proveedor() {
+		return tipo_proveedor;
+	}
+
+	public void setTipo_proveedor(String tipo_proveedor) {
+		this.tipo_proveedor = tipo_proveedor;
+	}
+	
+    
 }

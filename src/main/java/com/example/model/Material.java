@@ -28,14 +28,6 @@ public class Material {
 	@JoinColumn(name="coleccion_id")
 	@JsonIgnoreProperties(value="materiales")
     private Coleccion coleccion;
-	
-    
-
-
-	@ManyToOne()
-	@JoinColumn(name="proovedor_id")
-	@JsonIgnoreProperties(value="materiales")
-    private Proveedor proveedor;
     
 	
     public Material() {
@@ -43,10 +35,9 @@ public class Material {
     }
 
     
-    public Material(String nombre,int cantidad, Proveedor proveedor, String fechaInicio, String fechaFin) {
+    public Material(String nombre,int cantidad, String fechaInicio, String fechaFin) {
         this.nombre = nombre;
         this.cantidad = cantidad;
-        this.proveedor = proveedor;
         this.fechaInicio =fechaInicio;
         this.fechaFin = fechaFin;
     }
@@ -93,16 +84,6 @@ public class Material {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
     }
     
 	public Coleccion getColeccion() {

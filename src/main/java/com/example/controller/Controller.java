@@ -20,13 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.model.Coleccion;
 import com.example.model.Material;
 import com.example.model.Modelo;
-import com.example.model.Proveedor;
 import com.example.model.Tipo;
 import com.example.model.Usuario;
 import com.example.repositories.ColeccionRepository;
 import com.example.repositories.MaterialRepository;
 import com.example.repositories.ModeloRepository;
-import com.example.repositories.ProveedorRepository;
 import com.example.repositories.TipoRepository;
 import com.example.repositories.UsuarioRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -52,10 +50,6 @@ public class Controller {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	@Autowired
-	private ProveedorRepository proveedorRepository;
-	//  CONTROLERS COLECCION
-	
 	@PostMapping("/createColeccion")
 	 public ResponseEntity<Coleccion> createColeccion(@RequestBody Coleccion coleccion) {
 		 System.out.println("Entra al controller Coleccion");
@@ -80,17 +74,30 @@ public class Controller {
 		 return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
 	  }
 	
-	@PutMapping(value = "/updateColeccionLanzada")
-	 public  ResponseEntity<Coleccion> updateColeccionLanzada(@RequestParam long id) {
-		 Optional<Coleccion> current = coleccionRepository.findById(id);
-		 if(current.isEmpty()){
-			 return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
-		 }
-		 current.get().setLanzado(true);
-		 coleccionRepository.save(current.get());
+	@PutMapping(value = "/updateRutaYtipoProveedor")
+	public  ResponseEntity<Coleccion> updateRutaYtipoProveedor(@RequestParam long id, @RequestBody Coleccion coleccion) {
+		Optional<Coleccion> current = coleccionRepository.findById(id);
+		if(current.isEmpty()){
+			return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
+		}
+		current.get().setRutas(coleccion.getRutas());
+		current.get().setTipo_proveedor(coleccion.getTipo_proveedor());
+		coleccionRepository.save(current.get());
 		 
-		 return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
-	  }
+		return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/updateColeccionLanzada")
+	public  ResponseEntity<Coleccion> updateColeccionLanzada(@RequestParam long id) {
+		Optional<Coleccion> current = coleccionRepository.findById(id);
+		if(current.isEmpty()){
+			return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
+		}
+		current.get().setLanzado(true);
+		coleccionRepository.save(current.get());
+		 
+		return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
+	}
 	
 	@PutMapping(value = "/updateColeccionNegociada")
 	 public  ResponseEntity<Coleccion> updateColeccion(@RequestParam long id) {
@@ -146,7 +153,6 @@ public class Controller {
 		 current.get().setNombre(material.getNombre());
 		 current.get().setFechaInicio(material.getFechaInicio());
 		 current.get().setFechaFin(material.getFechaFin());
-		 current.get().setProveedor(material.getProveedor());
 		 materialRepository.save(current.get());
 		 
 		 return new ResponseEntity<Material>(current.get(),HttpStatus.OK);
@@ -291,28 +297,4 @@ public class Controller {
 		 return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	 }
 	
-	
-	
-	
-	
-	//proveedor
-	
-	@PostMapping("/createProveedor")
-	 public ResponseEntity<Proveedor> createProveedor(@RequestBody Proveedor proveedor) {
-		 System.out.println("Entra al controller tipo");
-		 proveedorRepository.save(proveedor);
-		 return new ResponseEntity<Proveedor>(proveedor, HttpStatus.CREATED);
-	}
-	
-	@GetMapping("/getProveedor")
-	 public ResponseEntity<Proveedor> getProveedor(@RequestParam long id) {
-		 System.out.println("Entra al controller");
-		 Optional<Proveedor> prove = proveedorRepository.findById(id);
-		 if (prove.isEmpty()) {
-			 System.out.println("user es vacio");
-			 return new ResponseEntity<Proveedor>(HttpStatus.NOT_FOUND);
-		 }
-		 System.out.println("user no es vacio");
-		 return new ResponseEntity<Proveedor>(prove.get(), HttpStatus.OK);
-	 }
 }
