@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.model.Coleccion;
 import com.example.model.Material;
 import com.example.model.Modelo;
-import com.example.model.Plan;
 import com.example.model.Proveedor;
 import com.example.model.Tipo;
 import com.example.model.Usuario;
@@ -63,7 +64,7 @@ public class Controller {
 	}
 	
 	@PutMapping(value = "/updateColeccion")
-	 public  ResponseEntity<Coleccion> updateEmprendimiento(@RequestParam long id, @RequestBody Coleccion coleccion) {
+	 public  ResponseEntity<Coleccion> updateColeccion(@RequestParam long id, @RequestBody Coleccion coleccion) {
 		 Optional<Coleccion> current = coleccionRepository.findById(id);
 		 if(current.isEmpty()){
 			 return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
@@ -74,6 +75,31 @@ public class Controller {
 		 current.get().setFechaInicio(coleccion.getFechaInicio());
 		 current.get().setUsuario(coleccion.getUsuario());
 		 current.get().setModelos(coleccion.getModelos());
+		 coleccionRepository.save(current.get());
+		 
+		 return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
+	  }
+	
+	@PutMapping(value = "/updateColeccionLanzada")
+	 public  ResponseEntity<Coleccion> updateColeccionLanzada(@RequestParam long id) {
+		 Optional<Coleccion> current = coleccionRepository.findById(id);
+		 if(current.isEmpty()){
+			 return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
+		 }
+		 current.get().setLanzado(true);
+		 coleccionRepository.save(current.get());
+		 
+		 return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
+	  }
+	
+	@PutMapping(value = "/updateColeccionNegociada")
+	 public  ResponseEntity<Coleccion> updateColeccion(@RequestParam long id) {
+		 Optional<Coleccion> current = coleccionRepository.findById(id);
+		 if(current.isEmpty()){
+			 return new ResponseEntity<Coleccion>(HttpStatus.NOT_FOUND);
+		 }
+		 current.get().setNegociado(true);
+
 		 coleccionRepository.save(current.get());
 		 
 		 return new ResponseEntity<Coleccion>(current.get(),HttpStatus.OK);
@@ -104,7 +130,7 @@ public class Controller {
 	//  CONTROLERS material
 	
 	@PostMapping("/createMaterial")
-	 public ResponseEntity<Material> createDonacion(@RequestBody Material material) {
+	 public ResponseEntity<Material> createMaterial(@RequestBody Material material) {
 		 System.out.println("Entra al controller c material");
 		 materialRepository.save(material);
 		 return new ResponseEntity<Material>(material, HttpStatus.CREATED);
@@ -138,13 +164,26 @@ public class Controller {
 	 }
 	
 	
-	
+	@DeleteMapping("/deleteMateriales")
+	 public ResponseEntity<List<Material>> deleteCategoria(@RequestBody Coleccion coleccion) {
+		 List<Material> lista = materialRepository.findByColeccion(coleccion);
+		 if (lista.isEmpty()) {
+			 return new ResponseEntity<List<Material>>(HttpStatus.NOT_FOUND);
+		 }else {
+			 for (Material material : lista) {
+				 materialRepository.delete(material);
+			}
+			
+			 return new ResponseEntity<List<Material>>(lista, HttpStatus.OK);
+		 }
+		 
+	 }
 	
 	//  CONTROLERS modelo
 	
 	//anda
 	@PostMapping("/createModelo")
-	 public ResponseEntity<Modelo> createEmprendimiento(@RequestBody Modelo modelo) {
+	 public ResponseEntity<Modelo> createModelo(@RequestBody Modelo modelo) {
 		 System.out.println("Entra al controller create modelo");
 		 modeloRepository.save(modelo);
 		 return new ResponseEntity<Modelo>(modelo, HttpStatus.CREATED);
@@ -161,7 +200,7 @@ public class Controller {
 	 }
 	
 	@GetMapping("/getListamodelos")
-	 public ResponseEntity<List<Modelo>> getListaModelo() {
+	 public ResponseEntity<List<Modelo>> getListaModelos() {
 		 System.out.println("Entra al controller  modelo");
 		 List<Modelo> modelos = modeloRepository.findAll();
 		 if (modelos.isEmpty()) {
@@ -177,7 +216,7 @@ public class Controller {
 	//  CONTROLERS tipo
 	
 	@PostMapping("/createTipo")
-	 public ResponseEntity<Tipo> createPlan(@RequestBody Tipo tipo) {
+	 public ResponseEntity<Tipo> createTipo(@RequestBody Tipo tipo) {
 		 System.out.println("Entra al controller tipo");
 		 tipoRepository.save(tipo);
 		 return new ResponseEntity<Tipo>(tipo, HttpStatus.CREATED);
@@ -194,7 +233,7 @@ public class Controller {
 	 }
 	
 	@GetMapping("/getListaTipos")
-	 public ResponseEntity<List<Tipo>> getListaTipo() {
+	 public ResponseEntity<List<Tipo>> getListaTipos() {
 		 System.out.println("Entra al controller  Tipo");
 		 List<Tipo> tipo = tipoRepository.findAll();
 		 if (tipo.isEmpty()) {
@@ -259,7 +298,7 @@ public class Controller {
 	//proveedor
 	
 	@PostMapping("/createProveedor")
-	 public ResponseEntity<Proveedor> createPlan(@RequestBody Proveedor proveedor) {
+	 public ResponseEntity<Proveedor> createProveedor(@RequestBody Proveedor proveedor) {
 		 System.out.println("Entra al controller tipo");
 		 proveedorRepository.save(proveedor);
 		 return new ResponseEntity<Proveedor>(proveedor, HttpStatus.CREATED);

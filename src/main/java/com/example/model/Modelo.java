@@ -1,5 +1,4 @@
 package com.example.model;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,11 +14,8 @@ public class Modelo {
     @Column(name="NOMBRE")
     String nombre; 
     
-    @OneToMany(mappedBy = "modelo",cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties(value="modelo")
-    private List<Material> materiales;
       
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name="coleccion_id")
     @JsonIgnoreProperties(value="modelos")
     private Coleccion coleccion;

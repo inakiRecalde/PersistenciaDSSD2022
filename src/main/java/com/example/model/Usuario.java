@@ -4,10 +4,18 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 
 @Entity
-@Table(name="USUARIOS")
+@Table(name="USUARIO")
 public class Usuario {
     
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -16,8 +24,8 @@ public class Usuario {
     @Column(name="NOMBRE")
     private String nombre;
 
-    @OneToMany(mappedBy = "usuario")
-    @JsonIgnoreProperties(value="usuario")
+	@OneToMany( mappedBy = "usuario",cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties(value="usuario")
     private List<Coleccion> coleccion;
     
     public Usuario(String nombre, List<Coleccion> coleccion) {

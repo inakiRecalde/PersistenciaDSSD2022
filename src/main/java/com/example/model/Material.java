@@ -1,11 +1,8 @@
 package com.example.model;
-import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
-
 
 @Entity
 @Table(name="MATERIALES")
@@ -25,18 +22,17 @@ public class Material {
     
     @Column(name="FECHAFIN")
     private String fechaFin;
-    
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name="plan_id")
-	@JsonIgnoreProperties(value="planes")
-    private Plan plan;
+
 	
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="modelo_id")
-    @JsonIgnoreProperties(value="materiales")
-    private Modelo modelo;
+	@ManyToOne()
+	@JoinColumn(name="coleccion_id")
+	@JsonIgnoreProperties(value="materiales")
+    private Coleccion coleccion;
+	
     
-	@ManyToOne(cascade = CascadeType.REMOVE)
+
+
+	@ManyToOne()
 	@JoinColumn(name="proovedor_id")
 	@JsonIgnoreProperties(value="materiales")
     private Proveedor proveedor;
@@ -55,29 +51,6 @@ public class Material {
         this.fechaFin = fechaFin;
     }
     
-
-
-
-
-
-	public Modelo getModelo() {
-		return modelo;
-	}
-
-
-	public void setModelo(Modelo modelo) {
-		this.modelo = modelo;
-	}
-
-
-	public Plan getPlan() {
-		return plan;
-	}
-
-
-	public void setPlan(Plan plan) {
-		this.plan = plan;
-	}
 
 
 	public String getFechaInicio() {
@@ -131,4 +104,13 @@ public class Material {
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
     }
+    
+	public Coleccion getColeccion() {
+		return coleccion;
+	}
+
+
+	public void setColeccion(Coleccion coleccion) {
+		this.coleccion = coleccion;
+	}
 }

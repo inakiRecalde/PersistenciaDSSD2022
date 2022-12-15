@@ -53,7 +53,7 @@ public class PersistenceConfig {
 	
 	private Properties additionalProperties() {
 		Properties properties = new Properties();		
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("hibernate.hbm2ddl.auto", "create");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 		properties.setProperty("hibernate.default_schema", "db-dssd2022");
 		return properties;
