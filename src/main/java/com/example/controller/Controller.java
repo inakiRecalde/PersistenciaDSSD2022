@@ -36,7 +36,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Controller {
 	@Autowired
 	private ColeccionRepository coleccionRepository;
-	
 
 	@Autowired
 	private MaterialRepository materialRepository;
@@ -134,6 +133,48 @@ public class Controller {
 		 return new ResponseEntity<List<Coleccion>>(colecciones, HttpStatus.OK);
 	 }
 	
+	@GetMapping("/getCantColeccionesFinalizadas")
+	 public ResponseEntity<Integer> getCantColeccionesFinalizadas() {
+		 System.out.println("Entra al controller  Coleccion");
+		 List<Coleccion> colecciones = coleccionRepository.findAllByLanzado(true);
+		 return new ResponseEntity<Integer>(colecciones.size(),HttpStatus.OK); 
+	 }
+	
+	@GetMapping("/getCantColeccionesNegociadas")
+	 public ResponseEntity<Integer> getCantColeccionesNegociadas() {
+		 System.out.println("Entra al controller  Coleccion");
+		 List<Coleccion> colecciones = coleccionRepository.findAllByNegociado(true);
+		 return new ResponseEntity<Integer>(colecciones.size(),HttpStatus.OK); 
+	 }
+	
+	@GetMapping("/getPromCantMaterialesPorColeccion")
+	public ResponseEntity<Float> getPromCantMaterialesPorColeccion() {
+		System.out.println("Entra al controller  Coleccion");
+		List<Coleccion> colecciones = coleccionRepository.findAll();
+		if(colecciones.size()==0)
+			return new ResponseEntity<Float>((float) -1, HttpStatus.OK);
+		float total_materiales = 0;
+		for (Coleccion coleccion : colecciones) {
+			total_materiales += coleccion.getModelos().size();
+		}
+		float promedio = total_materiales / colecciones.size();
+		return new ResponseEntity<Float>(promedio,HttpStatus.OK); 
+	 }
+	
+	@GetMapping("/getPromCantModelosPorColeccion")
+	public ResponseEntity<Float> getPromCantModelosPorColeccion() {
+		System.out.println("Entra al controller  Coleccion");
+		List<Coleccion> colecciones = coleccionRepository.findAll();
+		if(colecciones.size()==0)
+			return new ResponseEntity<Float>((float) -1, HttpStatus.OK);
+		float total_materiales = 0;
+		for (Coleccion coleccion : colecciones) {
+			total_materiales += coleccion.getModelos().size();
+		}
+		float promedio = total_materiales / colecciones.size();
+		return new ResponseEntity<Float>(promedio,HttpStatus.OK); 
+	 }
+	
 	//  CONTROLERS material
 	
 	@PostMapping("/createMaterial")
@@ -172,7 +213,7 @@ public class Controller {
 	
 	@DeleteMapping("/deleteMateriales")
 	 public ResponseEntity<List<Material>> deleteCategoria(@RequestBody Coleccion coleccion) {
-		 List<Material> lista = materialRepository.findByColeccion(coleccion);
+		 List<Material> lista = materialRepository.findAllByColeccion(coleccion);
 		 if (lista.isEmpty()) {
 			 return new ResponseEntity<List<Material>>(HttpStatus.NOT_FOUND);
 		 }else {
@@ -216,8 +257,13 @@ public class Controller {
 		 return new ResponseEntity<List<Modelo>>(modelos, HttpStatus.OK);
 	 }
 	
-	
-
+	@GetMapping("/getModelosSegunColeccion")
+	public ResponseEntity<List<Modelo>> getModelosSegunColeccion(@RequestParam Long id_coleccion) {
+		Optional<Coleccion> coleccion = coleccionRepository.findById(id_coleccion);
+		System.out.println("Entra al controller  modelo");
+		List<Modelo> modelos = modeloRepository.findAllByColeccion(coleccion.get());
+		return new ResponseEntity<List<Modelo>>(modelos, HttpStatus.OK);
+	}
 	
 	//  CONTROLERS tipo
 	

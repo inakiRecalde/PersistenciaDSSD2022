@@ -10,5 +10,5 @@ import com.example.model.*;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Long> {
 
-	List<Material> findByColeccion(Coleccion coleccion);
+	List<Material> findAllByColeccion(Coleccion coleccion);
 }
